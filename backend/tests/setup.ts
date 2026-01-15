@@ -1,22 +1,43 @@
-// // tests/setup.ts
-// import mongoose from 'mongoose';
-// import { beforeAll, afterAll, afterEach } from 'vitest';
+import dotenv from 'dotenv'
+dotenv.config();
 
-// // Conectar a una DB de test antes de empezar
-// beforeAll(async () => {
-//     // Idealmente usa una variable de entorno TEST_DB_URI
-//     await mongoose.connect(process.env.TEST_DB_URI || 'mongodb://localhost:27017/test_db');
-// });
+import chalk from 'chalk';
+import mongoose from 'mongoose';
+import { beforeAll, afterAll, afterEach } from 'vitest';
 
-// // Limpiar colecciones después de cada test (para que no choquen datos)
-// afterEach(async () => {
-//     const collections = mongoose.connection.collections;
-//     for (const key in collections) {
-//         await collections[key].deleteMany({});
-//     }
-// });
+// backend/tests/setup.ts
+beforeAll(async () => {
+    // Cada worker tendrá un nombre de DB único: test_db_1, test_db_2, etc.
+    const workerId = process.env.VITEST_WORKER_ID || '1';
+    const baseDbName = process.env.MONGODB_TEST_DATABASE || 'evaluacion-aptitudes-test';
+    const dynamicDbName = `${baseDbName}_${workerId}`;
 
-// // Cerrar conexión al terminar todo
-// afterAll(async () => {
-//     await mongoose.connection.close();
-// });
+    if (mongoose.connection.readyState === 0) {
+        try {
+            await mongoose.connect(process.env.MONGODB_TEST_URL || 'mongodb://localhost:27017/test_db', {
+                dbName: dynamicDbName 
+            });
+            console.log(chalk.blue(`Worker ${workerId} -> DB: ${dynamicDbName}`));
+        } catch (error) {
+            console.log(chalk.blue(`Error al conectar db ${workerId} -> DB: ${dynamicDbName}`));
+        }
+    }
+});
+
+afterEach(async () => {
+    const collections = mongoose.connection.collections;
+    for (const key in collections) {
+        await collections[key].deleteMany({});
+    }
+});
+
+afterAll(async () => {
+    try {
+        if (mongoose.connection.db) {
+            await mongoose.connection.db.dropDatabase();
+        }
+        await mongoose.connection.close();
+    } catch (error) {
+        console.error('Error limpiando la DB del worker:', error);
+    }
+});
