@@ -21,3 +21,15 @@ Se implementó un patrón de **Inyección de Dependencias Manual** centralizado 
   1. **Clean Architecture:** Mantiene las capas de Dominio y Aplicación libres de frameworks de inyección o decoradores externos (como `@Injectable` de NestJS o TSyringe).
   2. **Centralización:** Toda la composición del grafo de objetos ocurre en un único punto (Composition Root), facilitando la visión global de las dependencias.
   3. **Testabilidad:** Facilita enormemente el testing de integración, permitiendo reemplazar el contenedor real por uno con mocks o implementaciones en memoria para las pruebas, sin tocar el código de la aplicación.
+
+  ### Tipado de Request en Express
+
+Para garantizar tipado seguro en los middlewares se utiliza **declaration merging** de TypeScript, extendiendo `Express.Request` con la propiedad `user`.  
+Esto se define en un archivo global `types/express/index.d.ts`.
+
+**Justificación Arquitectónica:**
+- Express es un detalle de infraestructura (framework).
+- El dominio no depende de Express ni de sus tipos.
+- El tipado se declara globalmente para evitar imports repetitivos y mantener una API consistente.
+
+Esta técnica es estándar en proyectos TypeScript con Express.

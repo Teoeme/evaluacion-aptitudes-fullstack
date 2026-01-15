@@ -1,6 +1,6 @@
 import { RegistrarUsuarioUseCase } from "../application/use-cases/Usuario/RegistrarUsuarioUseCase";
 import { MongoUsuarioRepository } from "./database/mongodb/repositories/MongoUsuarioRepository";
-import { BcryptPasswordHasher } from "./services/BcryptPasswordHasher";
+import { BcryptPasswordHasher } from "./auth/BcryptPasswordHasher";
 import { MongooseIdGenerator } from "./services/MongooseIdGenerator";
 
 const idGenerator = new MongooseIdGenerator();

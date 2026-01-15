@@ -5,6 +5,11 @@ export enum Roles {
     CONDUCTOR = 'CONDUCTOR',
 }
 
+export const JerarquiaRoles: Record<Roles,number> = {
+    [Roles.ADMIN]: 1,
+    [Roles.CONDUCTOR]: 2,
+}
+
 export type TipoRol = Roles;
 
 export class RolUsuario {
@@ -32,6 +37,19 @@ export class RolUsuario {
     esAdmin(): boolean {
         return this.value === Roles.ADMIN;
     }
+
+    getJerarquia(): number {
+        return JerarquiaRoles[this.value];
+    };
+    
+    esAlMenos(rol: Roles | RolUsuario): boolean {
+        if(rol instanceof RolUsuario){
+            return this.getJerarquia() >= rol.getJerarquia();
+        }
+        return this.getJerarquia() >= JerarquiaRoles[rol];
+    }
+
+    
 
     static create(value: string): RolUsuario {
         return new RolUsuario(value);
