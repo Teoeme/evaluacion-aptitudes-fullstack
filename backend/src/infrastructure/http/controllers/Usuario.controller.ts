@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { RegistrarUsuarioSchema } from "../../../application/dtos/Usuario/RegistrarUsuarioDto";
 import { ServiceContainer } from "../../ServiceContainer";
 import { HttpResponse } from "../utils/HttpResponse";
+import { LoginUsuarioSchema } from "../../../application/dtos/Auth/LoginUsuarioDto";
 
 export class UsuarioController {
 
@@ -14,6 +15,7 @@ export class UsuarioController {
             next(error);
         }
     };
+    
 
     
 }

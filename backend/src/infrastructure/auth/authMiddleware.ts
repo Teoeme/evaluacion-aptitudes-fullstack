@@ -4,32 +4,34 @@ import { RolUsuario } from "../../domain/value-objects/RolUsuario"
 import { IUsuarioRepositorio } from "../../domain/repositories/IUsuarioRepositorio"
 import { UsuarioAutenticado } from "../../types/express"
 import { AuthUsuarioMapper } from "./AuthUsuarioMapper"
+import { IAuthTokenService } from "../../domain/services/IAuthTokenService"
+import { JwtAuthTokenService } from "./JwtAuthTokenService"
 
 
 export class AuthMiddleware {
     private readonly usuarioRepositorio: IUsuarioRepositorio
+    private readonly authTokenService: IAuthTokenService 
 
     constructor(dependencies: {
         userRepository: IUsuarioRepositorio
+        authTokenService: IAuthTokenService
     }) {
         this.usuarioRepositorio = dependencies.userRepository
+        this.authTokenService = dependencies.authTokenService
     }
 
 
     authMiddleware = () => {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
-
                 const token = this.obtenerTokenDesdeRequest(req)
                 this.validarFormatoToken(token)
-
-                const userData = await this.obtenerDataUsuario(token)
-
+                const {id}=await this.authTokenService.verificarToken(token)
+                const userData = await this.obtenerDataUsuario(id)
                 req.user = userData
                 next()
 
             } catch (error) {
-                console.log(error)
                 next(error)
             }
         }
@@ -64,7 +66,6 @@ export class AuthMiddleware {
         if(!rolSuficiente){
             throw new ForbiddenError('Forbidden', `Usuario no tiene un rol suficiente, roles requeridos: ${roles.map(r=>r.getValue()).join(', ')}`)
         }
-        
     }
 
     private obtenerTokenDesdeRequest = (req: Request) => {
@@ -88,5 +89,4 @@ export class AuthMiddleware {
         }
         return AuthUsuarioMapper.toUsuarioAutenticado(usuario)
     }
-
 }

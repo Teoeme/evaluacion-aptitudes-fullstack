@@ -11,7 +11,7 @@ beforeAll(async () => {
     const workerId = process.env.VITEST_WORKER_ID || '1';
     const baseDbName = process.env.MONGODB_TEST_DATABASE || 'evaluacion-aptitudes-test';
     const dynamicDbName = `${baseDbName}_${workerId}`;
-
+    console.log(process.env.MONGODB_TEST_URL || 'mongodb://localhost:27017/test_db');
     if (mongoose.connection.readyState === 0) {
         try {
             await mongoose.connect(process.env.MONGODB_TEST_URL || 'mongodb://localhost:27017/test_db', {
@@ -20,6 +20,7 @@ beforeAll(async () => {
             console.log(chalk.blue(`Worker ${workerId} -> DB: ${dynamicDbName}`));
         } catch (error) {
             console.log(chalk.blue(`Error al conectar db ${workerId} -> DB: ${dynamicDbName}`));
+            console.error(error);
         }
     }
 });

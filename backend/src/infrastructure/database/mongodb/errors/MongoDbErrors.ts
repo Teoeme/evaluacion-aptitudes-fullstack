@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { CustomError } from "../../../domain/errors/BaseErrors";
+import { CustomError } from "../../../../domain/errors/BaseErrors";
 
 
 export class MongoDbError extends CustomError {

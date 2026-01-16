@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { CustomError } from "../../../domain/errors/BaseErrors";
-import { isMongooseError, mongoErrorDispatcher } from "../utils/MongoDbErrors";
 import { zodErrorHandler } from "./schemaValidator";
 import { ZodError } from "zod";
+import { isMongooseError, mongoErrorDispatcher } from "../../database/mongodb/errors/MongoDbErrors";
 
 export enum ErrorCode {
   INTERNAL_ERROR = 'INTERNAL_ERROR',
