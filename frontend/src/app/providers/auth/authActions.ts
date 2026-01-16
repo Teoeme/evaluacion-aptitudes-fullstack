@@ -26,6 +26,7 @@ const verifyToken = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await useCaseVerifyToken(fetcher);
+      console.log('verifyToken',response)
       return response;
     } catch (error: unknown) {
       return fetcher.errorMapper.isMappedError(error)

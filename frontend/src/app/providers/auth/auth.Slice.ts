@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { AppError } from "../../../entities/errors/IErrors";
-import type { IUserFromApi } from "../../../entities/user/IUser";
+import type { UsuarioResponseDto } from "../../../entities/Usuario/Usuario";
 import type { UseCaseLoginResult } from "../../../features/auth/use-cases/login";
 import authActions from "./authActions";
 import { type WhoAmIUseCaseResult } from "../../../features/auth/use-cases/whoAmI";
@@ -9,7 +9,7 @@ const { login, verifyToken, revalidateTokenSilently,whoAmI} = authActions;
 
 interface AuthState {
     isAuthenticated: boolean;
-    user: IUserFromApi | null;
+    usuario: UsuarioResponseDto | null;
     loading: boolean;
     error: {
         message: string;
@@ -21,7 +21,7 @@ interface AuthState {
 
 const intialState: AuthState = {
   isAuthenticated: false,
-  user:null,
+  usuario:null,
   loading: true,
   error: {
     message: "",
@@ -37,7 +37,7 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.isAuthenticated = false;
-      state.user = null;
+      state.usuario = null;
       state.loading = false;
       state.error = {
         message: "",
@@ -61,7 +61,7 @@ const authSlice = createSlice({
         login.fulfilled,
         (state, action: PayloadAction<UseCaseLoginResult>) => {
           state.isAuthenticated = true;
-          state.user = action.payload.user;
+          state.usuario = action.payload.user;
           state.loading = false;
         }
       )
@@ -87,7 +87,7 @@ const authSlice = createSlice({
           state.loading = false;
           state.error = action.payload as unknown as AppError;
           state.isAuthenticated = false;
-          state.user = null;
+          state.usuario = null;
         }
       )
       .addCase(
@@ -100,7 +100,7 @@ const authSlice = createSlice({
         revalidateTokenSilently.rejected,
         (state,action:PayloadAction<unknown>) => {
           state.isAuthenticated = false;
-          state.user = null;
+          state.usuario = null;
           state.error = action.payload as unknown as AppError;
         }
       )
@@ -109,7 +109,7 @@ const authSlice = createSlice({
         (state, action: PayloadAction<WhoAmIUseCaseResult>) => {
           state.loading = false;
           state.isAuthenticated = true;
-          state.user = action.payload.user;
+          state.usuario = action.payload.data || null;
         }
       )
   },

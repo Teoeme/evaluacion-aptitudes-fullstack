@@ -31,4 +31,24 @@ export class AuthController {
             next(error);
         }
     }
+
+    async verificarToken(req:Request,res:Response,next:NextFunction){
+        try {
+            const token = req.cookies.token;
+            const { valid, payload } = await ServiceContainer.auth.verificarToken.execute(token);
+            return HttpResponse.ok(res,{valid,payload},'Token verificado exitosamente');
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async whoAmI(req:Request,res:Response,next:NextFunction){
+        try {
+            const actor=req.user!
+            const usuario=await ServiceContainer.auth.whoAmI.execute(actor.id)
+            return HttpResponse.ok(res,usuario,'Usuario obtenido exitosamente');
+        }catch(error){
+            next(error);
+        }
+    }
 }

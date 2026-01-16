@@ -8,7 +8,9 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "seed": "ts-node src/infrastructure/database/mongodb/MongoSemillero.ts",
+    "seed:clear": "ts-node src/infrastructure/database/mongodb/databaseSeeder.ts clear"
   },
   "keywords": [],
   "author": "",

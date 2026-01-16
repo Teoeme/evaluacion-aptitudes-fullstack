@@ -28,6 +28,8 @@ import { ListarRondasUseCase } from "../application/use-cases/Ronda/ListarRondas
 import { ObtenerRondaUseCase } from "../application/use-cases/Ronda/ObtenerRondaUseCase";
 import { MongoRondaRepository } from "./database/mongodb/repositories/MongoRondaRepository";
 import { ObtenerValidacionesPorVehiculoUseCase } from "../application/use-cases/Ronda/ObtenerValidacionesPorVehiculoUseCase";
+import { VerificarTokenUseCase } from "../application/use-cases/Auth/VerificarTokenUseCase";
+import { WhoAmIUseCase } from "../application/use-cases/Auth/WhoAmIUseCase";
 
 const idGenerator = new MongooseIdGenerator();
 const passwordHasher = new BcryptPasswordHasher();
@@ -45,7 +47,9 @@ export const ServiceContainer = {
     },
     auth: {
         login: new LoginUsuarioUseCase({usuarioRepositorio,passwordHasher,authTokenService}),
-        logout: new LogoutUsuarioUseCase()
+        logout: new LogoutUsuarioUseCase(),
+        verificarToken: new VerificarTokenUseCase({authTokenService}),
+        whoAmI: new WhoAmIUseCase({usuarioRepositorio}),
     },
     vehiculo: {
         crear: new CrearVehiculoUseCase({ vehiculoRepositorio, idGenerator }),

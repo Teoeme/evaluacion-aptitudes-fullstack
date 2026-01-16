@@ -79,9 +79,70 @@ Los tests usan factories reutilizables y helpers para autenticación.
 - El repositorio `MongoUsuarioRepository` no está completo (faltan métodos de listado/actualización/eliminación).  
 - Algunos casos de uso de Usuario quedaron fuera del alcance, ya que no eran necesarios para la prueba técnica.
 
+# Evaluación de aptitudes fullstack
+
+// ... contenido existente ...
 
 ## Cómo ejecutar
 
 cd backend
 npm install
 npm run dev
+
+---
+
+## Seeder de Base de Datos
+
+El proyecto incluye un seeder para poblar la base de datos con datos iniciales (usuarios, validaciones, etc.).
+
+### Configuración de Datos Iniciales
+
+Los datos iniciales se configuran en `src/infrastructure/database/mongodb/seedData.ts`. Este archivo contiene:
+
+- **Usuarios**: Al menos un usuario ADMIN y un CONDUCTOR para desarrollo
+- **Validaciones**: Checkpoints configurables del sistema de rondas con sus relevancias y tipos de vehículos aplicables
+
+### Comandos Disponibles
+
+#### Ejecutar el Seeder
+
+```bash
+cd backend
+npm run seed
+```
+
+
+Este comando:
+- Conecta a MongoDB usando las variables de entorno configuradas
+- Crea usuarios iniciales (si no existen)
+- Crea validaciones iniciales (si no existen)
+- Es **idempotente**: puedes ejecutarlo múltiples veces sin duplicar datos
+
+Datos Iniciales que se Crean
+Usuarios:
+admin@sistema.com - Rol: ADMIN
+conductor@sistema.com - Rol: CONDUCTOR
+Validaciones:
+10 validaciones preconfiguradas con relevancias según los requerimientos del negocio
+Incluye validaciones obligatorias y opcionales
+Configuradas para diferentes tipos de vehículos (Camion, Auto, Moto)
+
+#### Limpiar Base de Datos
+
+```bash
+cd backend
+npm run seed:clear
+```
+#### ADVERTENCIA: Este comando elimina TODOS los datos de todas las colecciones en la base de datos antes de ejecutar el seeder.
+
+
+## Cómo ejecutar
+```bash 
+cd backend
+npm install
+npm run dev
+```
+
+
+
+
