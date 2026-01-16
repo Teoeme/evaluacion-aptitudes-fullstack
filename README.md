@@ -72,25 +72,6 @@ Se priorizan **tests de integración** en cada módulo:
 
 Los tests usan factories reutilizables y helpers para autenticación.
 
----
-
-## Fe de erratas
-
-- El repositorio `MongoUsuarioRepository` no está completo (faltan métodos de listado/actualización/eliminación).  
-- Algunos casos de uso de Usuario quedaron fuera del alcance, ya que no eran necesarios para la prueba técnica.
-
-# Evaluación de aptitudes fullstack
-
-// ... contenido existente ...
-
-## Cómo ejecutar
-
-cd backend
-npm install
-npm run dev
-
----
-
 ## Seeder de Base de Datos
 
 El proyecto incluye un seeder para poblar la base de datos con datos iniciales (usuarios, validaciones, etc.).
@@ -134,6 +115,16 @@ cd backend
 npm run seed:clear
 ```
 #### ADVERTENCIA: Este comando elimina TODOS los datos de todas las colecciones en la base de datos antes de ejecutar el seeder.
+
+
+
+---
+
+## Fe de erratas
+
+- El repositorio `MongoUsuarioRepository` no está completo (faltan métodos de listado/actualización/eliminación).  
+- Algunos casos de uso de Usuario quedaron fuera del alcance, ya que no eran necesarios para la prueba técnica.
+
 
 
 ## Cómo ejecutar
