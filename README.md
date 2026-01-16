@@ -32,4 +32,8 @@ Esto se define en un archivo global `types/express/index.d.ts`.
 - El dominio no depende de Express ni de sus tipos.
 - El tipado se declara globalmente para evitar imports repetitivos y mantener una API consistente.
 
-Esta técnica es estándar en proyectos TypeScript con Express.
+### Autenticación 
+Para simplificar la prueba técnica se implementa un solo JWT (sin refresh tokens).
+- Guardado en cookie HttpOnly
+- Logout = borrar cookie
+- No se implementa revocación ni persistencia en BBDD/caché 

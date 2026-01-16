@@ -2,10 +2,16 @@ import { Area } from "./Area";
 import { TipoResponsable, TiposResponsable } from "./TipoResponsable";
 
 export class ResponsableVehiculo {
-    private constructor(
-        private readonly idOrNombre: string,
-        private readonly tipo: TipoResponsable
-    ) { }
+    public readonly idOrNombre: string;
+    public readonly tipo: TipoResponsable;
+
+    constructor(
+        idOrNombre: string,
+        tipo: TipoResponsable
+    ) {
+        this.idOrNombre = idOrNombre;
+        this.tipo = tipo;
+    }
 
     static deUsuario(usuarioId: string): ResponsableVehiculo {
         return new ResponsableVehiculo(usuarioId, new TipoResponsable(TiposResponsable.USUARIO));

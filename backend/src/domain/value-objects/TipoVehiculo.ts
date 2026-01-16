@@ -16,7 +16,7 @@ export class TipoVehiculo {
         this.value = value as TiposVehiculo;
     }
 
-    getValue(): string {
+    getValue(): TiposVehiculo {
         return this.value;
     }
 

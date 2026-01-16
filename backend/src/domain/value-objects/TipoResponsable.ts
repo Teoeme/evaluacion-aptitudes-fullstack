@@ -15,7 +15,7 @@ export class TipoResponsable {
         this.value = value as TiposResponsable;
     }
 
-    getValue(): string {
+    getValue(): TiposResponsable {
         return this.value;
     }
 

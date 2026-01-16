@@ -25,4 +25,5 @@ export class JwtAuthTokenService implements IAuthTokenService {
             throw new UnauthorizedOperationError('Autenticación', 'Token inválido');
         }
     }
+
 }

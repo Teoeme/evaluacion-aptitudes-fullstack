@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { ForbiddenError, InvalidFormatError, UnauthorizedOperationError } from "../../domain/errors/BaseErrors"
-import { RolUsuario } from "../../domain/value-objects/RolUsuario"
+import { Roles, RolUsuario } from "../../domain/value-objects/RolUsuario"
 import { IUsuarioRepositorio } from "../../domain/repositories/IUsuarioRepositorio"
 import { UsuarioAutenticado } from "../../types/express"
 import { AuthUsuarioMapper } from "./AuthUsuarioMapper"
@@ -13,10 +13,10 @@ export class AuthMiddleware {
     private readonly authTokenService: IAuthTokenService 
 
     constructor(dependencies: {
-        userRepository: IUsuarioRepositorio
+        usuarioRepositorio: IUsuarioRepositorio
         authTokenService: IAuthTokenService
     }) {
-        this.usuarioRepositorio = dependencies.userRepository
+        this.usuarioRepositorio = dependencies.usuarioRepositorio
         this.authTokenService = dependencies.authTokenService
     }
 
@@ -37,7 +37,7 @@ export class AuthMiddleware {
         }
     }
 
-    withRoles = (roles:RolUsuario[])=>{
+    withRoles = (roles:Roles[])=>{
       return async (req: Request, res: Response, next: NextFunction) => {
         try {
             await new Promise((resolve,reject)=>{
@@ -57,14 +57,14 @@ export class AuthMiddleware {
       }
     }
 
-    private validarRolUsuario = (usuario: UsuarioAutenticado, roles: RolUsuario[]) => {
+    private validarRolUsuario = (usuario: UsuarioAutenticado, roles: Roles[]) => {
         if(!usuario.rol) throw new ForbiddenError('Forbidden', 'Usuario no tiene un rol asignado')
 
         const rolUsuario=usuario.rol
         const rolSuficiente=roles.some(r=>rolUsuario.esAlMenos(r))
 
         if(!rolSuficiente){
-            throw new ForbiddenError('Forbidden', `Usuario no tiene un rol suficiente, roles requeridos: ${roles.map(r=>r.getValue()).join(', ')}`)
+            throw new ForbiddenError('Forbidden', `Usuario no tiene un rol suficiente, roles requeridos: ${roles.join(', ')}`)
         }
     }
 

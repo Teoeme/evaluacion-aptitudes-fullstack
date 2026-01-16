@@ -13,6 +13,7 @@ export interface VehiculoProps {
     kilometraje: number;
     responsable: ResponsableVehiculo;
     activo: boolean;
+    createdAt?: Date;
 }
 
 export class Vehiculo {
@@ -25,6 +26,7 @@ export class Vehiculo {
     public readonly kilometraje: number;
     public readonly responsable: ResponsableVehiculo;
     public readonly activo: boolean;
+    public readonly createdAt: Date;
 
     constructor(props: VehiculoProps) {
         this.id = props.id;
@@ -36,7 +38,7 @@ export class Vehiculo {
         this.kilometraje = props.kilometraje;
         this.responsable = props.responsable;
         this.activo = props.activo;
-
+        this.createdAt = props.createdAt || new Date();
         this.validate();
     }
 

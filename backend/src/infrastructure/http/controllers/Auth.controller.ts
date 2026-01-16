@@ -21,4 +21,14 @@ export class AuthController {
             next(error);
         }
     }
+
+    async logout(req:Request,res:Response,next:NextFunction){
+        try {
+            await ServiceContainer.auth.logout.execute();
+            res.clearCookie('token');
+            return HttpResponse.ok(res,'Logout exitoso');
+        } catch (error) {
+            next(error);
+        }
+    }
 }
