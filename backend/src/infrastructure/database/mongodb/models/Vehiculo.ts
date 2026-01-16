@@ -1,4 +1,4 @@
-import { InferSchemaType, Schema } from "mongoose";
+import { InferSchemaType, model, Schema } from "mongoose";
 import { TiposVehiculo } from "../../../../domain/value-objects/TipoVehiculo";
 import { TiposResponsable } from "../../../../domain/value-objects/TipoResponsable";
 
@@ -18,5 +18,7 @@ const VehiculoSchema = new Schema({
     responsable: { type: ResponsableSchema, required: true },
     activo: { type: Boolean, required: true },
 }, { timestamps: true });
+
+export default model("Vehiculo", VehiculoSchema);
 
 export type IVehiculoMongo = InferSchemaType<typeof VehiculoSchema>;

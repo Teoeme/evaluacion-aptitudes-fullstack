@@ -4,7 +4,7 @@ export interface ItemValidacionRondaProps {
     relevancia: number;
     obligatoria: boolean;
     cumplida: boolean;
-    observaciones?: string;
+    observaciones?: string | undefined;
 }
 
 export class ItemValidacionRonda {

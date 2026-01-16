@@ -15,7 +15,7 @@ export class EstadoConductor {
         this.value = value as EstadosConductor;
     }
 
-    getValue(): string {
+    getValue(): EstadosConductor {
         return this.value;
     }
 

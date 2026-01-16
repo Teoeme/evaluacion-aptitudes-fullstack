@@ -9,8 +9,8 @@ export interface LicenciaConducirProps {
 }
 
 export interface ContactoProps {
-    telefono?: string;
-    email?: Email;
+    telefono?: string | undefined;
+    email?: Email | undefined;
 }
 
 export interface ConductorProps {
@@ -18,7 +18,7 @@ export interface ConductorProps {
     nombreCompleto: string;
     dni: string;
     licenciaConducir: LicenciaConducirProps;
-    contacto?: ContactoProps;
+    contacto?: ContactoProps | undefined;
     empresa: string;
     estado: EstadoConductor;
     usuarioId: string;
@@ -36,7 +36,7 @@ export class Conductor {
     public readonly empresa: string;
     public readonly estado: EstadoConductor;
     public readonly usuarioId: string;
-    public readonly createdAt?: Date;
+    public readonly createdAt: Date;
 
     constructor({
         id,

@@ -3,11 +3,13 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import { createApp } from '../../../src/infrastructure/http/app';
 import { Roles } from '../../../src/domain/value-objects/RolUsuario';
 import type { Express } from 'express';
+import { loginAsRole } from '../../utils/helper';
 
 let app: Express;
-
-beforeAll(() => {
+let agent:request.Agent;
+beforeAll(async () => {
   app = createApp();
+  agent = await loginAsRole(app,Roles.ADMIN);
 });
 
 describe('Login Usuario Tests de Integración', () => {
@@ -23,7 +25,7 @@ describe('Login Usuario Tests de Integración', () => {
   };
 
   it('POST /api/auth/login - debería loguear correctamente', async () => {
-    await request(app).post('/api/usuario').send(usuario);
+    await agent.post('/api/usuario').send(usuario);
 
     const response = await request(app)
       .post('/api/auth/login')
@@ -44,7 +46,7 @@ describe('Login Usuario Tests de Integración', () => {
   });
 
   it('POST /api/auth/login - debería fallar con password incorrecto', async () => {
-    await request(app).post('/api/usuario').send(usuario);
+    await agent.post('/api/usuario').send(usuario);
 
     const response = await request(app)
       .post('/api/auth/login')
@@ -52,7 +54,6 @@ describe('Login Usuario Tests de Integración', () => {
         email: usuario.email,
         password: 'PasswordIncorrecto'
       });
-
     expect(response.status).toBe(403); 
     expect(response.body.success).toBe(false);
     expect(response.body.message).toContain('Credenciales inválidas');

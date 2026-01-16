@@ -32,14 +32,11 @@ export class RegistrarUsuarioUseCase {
     }
 
     async execute(dto: RegistrarUsuarioDto) {
-        console.log('register user usecase',dto)
         const existeDni = await this.usuarioRepositorio.buscarPorDni(dto.dni);
-        console.log(existeDni,'existeDni')
         if (existeDni) {
             throw new ResourceAlreadyExistsError("Usuario", 'DNI', dto.dni);
         }
         const existeEmail = await this.usuarioRepositorio.buscarPorEmail(new Email(dto.email));
-        console.log(existeEmail,'existe email')
         if (existeEmail) {
             throw new ResourceAlreadyExistsError("Usuario", 'Email', dto.email);
         }

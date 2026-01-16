@@ -13,12 +13,12 @@ export interface RondaProps {
     kilometraje: number;
     vehiculoId: string;
     conductorId: string;
-    observaciones?: string;
+    observaciones?: string | undefined;
     validaciones: ItemValidacionRonda[];
     cumplimiento: number; //es la suma de las validaciones cumplidas
     estado: EstadoRonda; // es el estado final de la ronda, es decir si su cumplimiento es suficiente para habilitarla
     firmaDigital: FirmaDigital; //es un base64 de la firma digital del conductor capturada en FE con un canvas
-    createdAt?: Date;
+    createdAt?: Date | undefined;
 }
 
 
@@ -34,7 +34,7 @@ export class Ronda {
     public readonly cumplimiento: number;
     public readonly estado: EstadoRonda;
     public readonly firmaDigital: FirmaDigital;
-    public readonly createdAt?: Date;
+    public readonly createdAt: Date;
 
     constructor({
         id,

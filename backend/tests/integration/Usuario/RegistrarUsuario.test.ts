@@ -3,11 +3,14 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import { createApp } from '../../../src/infrastructure/http/app';
 import { Roles } from '../../../src/domain/value-objects/RolUsuario';
 import type {Express} from 'express'
+import { loginAsRole } from '../../utils/helper';
+import { BaseErrorCodes } from '../../../src/infrastructure/http/middlewares/errorHandler';
 
 let app:Express;
-
-beforeAll(()=>{
+let agent:request.Agent;
+beforeAll(async ()=>{
     app = createApp();
+    agent=await loginAsRole(app,Roles.ADMIN);
 })
 
 describe('Registrar Usuario Integration Test', () => {
@@ -23,11 +26,9 @@ describe('Registrar Usuario Integration Test', () => {
     };
 
     it('POST /api/usuarios - debería registrar un usuario exitosamente', async () => {
-        const response = await request(app)
+        const response = await agent
             .post('/api/usuario')
             .send(validUser);
-
-
         expect(response.status).toBe(201);
 
         expect(response.body.success).toBe(true);
@@ -47,41 +48,43 @@ describe('Registrar Usuario Integration Test', () => {
             confirmPassword: 'WrongPassword'
         };
 
-        const response = await request(app)
+        const response = await agent
             .post('/api/usuario')
             .send(invalidUser);
 
-        expect(response.status).toBe(400);
         expect(response.body.success).toBe(false);
+        expect(response.body.code).toBe(BaseErrorCodes.BAD_REQUEST);
         expect(response.body.message).toContain('Las contraseñas no coinciden');
     });
 
     it('POST /api/usuarios - debería fallar si el email ya existe', async () => {
-        await request(app).post('/api/usuario').send(validUser);
+        await agent.post('/api/usuario').send(validUser);
 
         // Intentamos registrar el mismo email de nuevo
-        const response = await request(app)
+        const response = await agent
             .post('/api/usuario')
             .send({
                 ...validUser,
-                dni: '99999999' 
+                dni: '99999991' 
             });
 
-        expect(response.status).toBe(409);
+        expect(response.body.success).toBe(false);
+        expect(response.body.code).toBe(BaseErrorCodes.RESOURCE_ALREADY_EXISTS);
         expect(response.body.message).toContain('Email');
     });
 
     it('POST /api/usuarios - debería fallar con DNI inválido', async () => {
         const userWithBadDni = {
             ...validUser,
+            email: 'otro@test.com',
             dni: '123'
         };
 
-        const response = await request(app)
+        const response = await agent
             .post('/api/usuario')
             .send(userWithBadDni);
-
-        expect(response.status).toBe(400);
+        expect(response.body.success).toBe(false);
+        expect(response.body.code).toBe(BaseErrorCodes.BAD_REQUEST);
         expect(response.body.details).toContain('DNI');
     });
 });

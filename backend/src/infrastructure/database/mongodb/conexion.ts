@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { MongoDbError } from "../../http/utils/MongoDbErrors";
+import { MongoDbError } from "./errors/MongoDbErrors";
 import chalk from "chalk";
 
 const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27017';

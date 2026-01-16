@@ -25,7 +25,7 @@ export class Validacion {
     public relevancia: number;
     public obligatoria: boolean;
     public tiposVehiculos: TipoVehiculo[];
-    public readonly createdAt?: Date;
+    public readonly createdAt: Date;
 
     constructor({
         id,

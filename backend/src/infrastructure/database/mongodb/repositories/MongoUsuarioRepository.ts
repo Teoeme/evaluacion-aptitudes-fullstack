@@ -25,7 +25,6 @@ export class MongoUsuarioRepository implements IUsuarioRepositorio {
             return usuarioPorDni ? MongoUsuarioMapper.toDomain(usuarioPorDni) : null
             
         } catch (error) {
-            console.log(error);
             return null
         }
     }
